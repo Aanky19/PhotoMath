@@ -4,6 +4,7 @@ package com.example.ankur.photomath;
  * Created by ankur on 5/3/17.
  */
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -31,6 +32,7 @@ public class GrayscaleThreshold extends AppCompatActivity {
     ImageView ivAfter, ivBefore;
     Button btnStart;
     Long start;
+    Button mainScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,14 @@ public class GrayscaleThreshold extends AppCompatActivity {
         ivAfter = (ImageView) findViewById(R.id.ivAfter);
         ivBefore = (ImageView) findViewById(R.id.ivBefore);
         btnStart = (Button) findViewById(R.id.btnStart);
+        mainScreen= (Button) findViewById(R.id.intentbtn);
+        mainScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(GrayscaleThreshold.this,MainActivity.class);
+                startActivity(i);
+            }
+        });
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,8 +252,6 @@ public class GrayscaleThreshold extends AppCompatActivity {
                     FileOutputStream out = new FileOutputStream(Filewrite);
                     verticalList.get(i).compress(Bitmap.CompressFormat.JPEG, 100, out);
 
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
