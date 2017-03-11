@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera_alt_white_36dp);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_keyboard_white_36dp);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera_alt_black_36dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_keyboard_black_36dp);
 
     }
 

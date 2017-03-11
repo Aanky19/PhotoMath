@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Photomath</string>
+    <string name="app_name">CamMath</string>
 
     <string name="title_activity_main_screen">MainScreen</string>
     <string name="dummy_button">Dummy Button</string>
