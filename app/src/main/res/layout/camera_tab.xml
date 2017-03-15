@@ -12,24 +12,29 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true" />
 
-    <ImageButton
-        android:id="@+id/Record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+    <ToggleButton
+        android:id="@+id/ibtnFlash"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="43dp"
-        android:layout_marginEnd="38dp"
-        android:src="@drawable/ic_play"
-         />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/toggle_selector"
+        android:scaleType="fitCenter"
+        android:textOff=""
+        android:textOn="" />
 
-    <Button
+    <ImageButton
         android:id="@+id/Capture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/Record"
-        android:layout_marginStart="60dp"
-        android:text="Capture" />
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_action_brightness_1" />
 
 </RelativeLayout>

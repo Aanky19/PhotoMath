@@ -20,19 +20,7 @@
         android:background="@android:color/transparent">
 
 
-        <ToggleButton
-            android:id="@+id/ibtnFlash"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="25dp"
-            android:textOff=""
-            android:textOn=""
-            android:background="@drawable/toggle_selector"
-            android:scaleType="fitCenter"/>
+
 
         <ImageButton
             android:id="@+id/ibtnSetting"
