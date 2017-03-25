@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -26,6 +27,7 @@ import android.os.HandlerThread;
 import android.support.v4.app.Fragment;
 import android.util.Size;
 import android.util.SparseIntArray;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.TextureView;
@@ -131,10 +133,9 @@ public class CameraTab extends Fragment {
                 case STATE_WAIT_LOCK:
                     Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
                     if (afState == CaptureRequest.CONTROL_AF_STATE_FOCUSED_LOCKED) {
-//                        unlockFocus();
-                        Toast.makeText(getActivity(), "Focus Locked Successfully", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(), "Focus Locked Successfully", Toast.LENGTH_SHORT).show();
                         mState= STATE_PICTURE_CAPTURED;
-                        Toast.makeText(getActivity(), "STATE_PICTURE_CAPTURED", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(), "STATE_PICTURE_CAPTURED", Toast.LENGTH_SHORT).show();
                         captureStillImage();
                     }
                     break;
@@ -173,29 +174,35 @@ public class CameraTab extends Fragment {
                     continue;
                 }
                 StreamConfigurationMap map = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-                Size LargestImageSize = Collections.max(
-                        Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
-                        new Comparator<Size>() {
-                            @Override
-                            public int compare(Size lhs, Size rhs) {
-                                return Long.signum(lhs.getWidth() * lhs.getHeight() -
-                                        rhs.getWidth() * rhs.getHeight());  // return largest image camera support
-                            }
-                        }
-                );
+
+                            Size LargestImageSize = getImageSize();
+//                        Size LargestImageSize = Collections.max(
+//                        Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
+//                        new Comparator<Size>() {
+//                            @Override
+//                            public int compare(Size lhs, Size rhs) {
+//                                return Long.signum(lhs.getWidth() * lhs.getHeight() -
+//                                        rhs.getWidth() * rhs.getHeight());  // return largest image camera support
+//                            }
+//                        }
+//                );
                 mImageReader = ImageReader.newInstance(LargestImageSize.getWidth(),
                         LargestImageSize.getHeight(),
                         ImageFormat.JPEG, 1); // last parameter is how much image needs to be captured
                 mImageReader.setOnImageAvailableListener(mOnImageAvailableListener,
                         mBackgroundHandler);
 
-                mPreviewSize = getPreferredPreviewSize(map.getOutputSizes(SurfaceTexture.class), width, height);  // Match Sizes
+                mPreviewSize = getPreferredPreviewSize();  // Match Sizes
                 mCameraId = cameraId;
                 return;
             }
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    private Size getImageSize() {
+     return new Size(3264,1836); // approx 6 Megapixels of ratio 16:9
     }
 
     private HandlerThread mBackgroundThread;
@@ -222,24 +229,29 @@ public class CameraTab extends Fragment {
             ByteBuffer byteBuffer = mImage.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[byteBuffer.remaining()];
             byteBuffer.get(bytes);
+            if (bytes.length>0) {
+                FileOutputStream fileOutputStream = null;
+                try {
+                    fileOutputStream = new FileOutputStream(mImageFile);
+                    fileOutputStream.write(bytes);
+                    Bitmap bmp = Bitmap.createBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()),100,100,200,200
+                            );
+                    bmp.getByteCount();
 
-            FileOutputStream fileOutputStream = null;
-            try {
-                fileOutputStream = new FileOutputStream(mImageFile);
-                fileOutputStream.write(bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                mImage.close();
-                if (fileOutputStream != null) {
-                    try {
-                        fileOutputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    mImage.close();
+                    if (fileOutputStream != null) {
+                        try {
+                            fileOutputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }
 
+            }
         }
     }
 
@@ -296,33 +308,37 @@ public class CameraTab extends Fragment {
         super.onPause();
     }
 
-    private Size getPreferredPreviewSize(Size[] mapSizes, int width, int height) {
-        List<Size> collectorSizes = new ArrayList<>();
-        for (Size option : mapSizes) {
-            if (width > height) {
-                if (option.getWidth() > width &&
-                        option.getHeight() > height) {
-                    collectorSizes.add(option);
-                } else {
-                    if (option.getWidth() > height &&
-                            option.getHeight() > width) {
-                        collectorSizes.add(option);
-                    }
-                }
-            }
-
-        }
-        if (collectorSizes.size() > 0) {
-            return Collections.min(collectorSizes, new Comparator<Size>() {
-
-                @Override
-                public int compare(Size lhs, Size rhs) {
-                    return Long.signum(lhs.getWidth() * lhs.getHeight() - rhs.getHeight() * rhs.getHeight());
-                }
-            });
-
-        }
-        return mapSizes[12];
+    private Size getPreferredPreviewSize() {
+//        List<Size> collectorSizes = new ArrayList<>();
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point point = new Point();
+        display.getSize(point);
+        Size size = new Size(point.x,point.y);
+//        for (Size option : mapSizes) {
+//            if (width > height) {
+//                if (option.getWidth() > width &&
+//                        option.getHeight() > height) {
+//                    collectorSizes.add(option);
+//                } else {
+//                    if (option.getWidth() > height &&
+//                            option.getHeight() > width) {
+//                        collectorSizes.add(option);
+//                    }
+//                }
+//            }
+//
+//        }
+//        if (collectorSizes.size() > 0) {
+//            return Collections.min(collectorSizes, new Comparator<Size>() {
+//
+//                @Override
+//                public int compare(Size lhs, Size rhs) {
+//                    return Long.signum(lhs.getWidth() * lhs.getHeight() - rhs.getHeight() * rhs.getHeight());
+//                }
+//            });
+//
+//        }
+        return size;
     }
 
     private void openCamera() {
@@ -403,12 +419,12 @@ public class CameraTab extends Fragment {
     }
 
     public void takephoto(View view) {
+        lockFocus();
         try {
-                 mImageFile = createImageFile();
+            mImageFile = createImageFile();
         } catch (IOException e){
             e.printStackTrace();
         }
-        lockFocus();
     }
 
     private void lockFocus() {
@@ -447,8 +463,8 @@ public class CameraTab extends Fragment {
                         public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                             super.onCaptureCompleted(session, request, result);
                             Toast.makeText(getActivity(), "ImageCaptured", Toast.LENGTH_SHORT).show();
-// TODO Focus locking and unlocking creates issue in capturing image.
-//                            unlockFocus();
+// TODO Focus locking and unlocking creates issue in capturing image on oneplus 3.
+                            unlockFocus();
                         }
                     };
 
@@ -471,7 +487,8 @@ public class CameraTab extends Fragment {
         mImageFileLocation = image.getAbsolutePath();
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
-       Bitmap temp= BitmapFactory.decodeFile(mImageFileLocation,bmOptions);
+        Bitmap temp= BitmapFactory.decodeFile(mImageFileLocation,bmOptions);
+
 
         return image;
 

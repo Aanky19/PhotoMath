@@ -26,15 +26,26 @@
         android:textOff=""
         android:textOn="" />
 
-    <ImageButton
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/Capture"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="40dp"
         android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_action_brightness_1" />
+        android:scaleType="fitCenter" />
+
+    <Button
+        android:id="@+id/shape"
+        android:text=""
+        android:textSize="32sp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="100dp"
+        android:background="@drawable/rectangle_shape"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
