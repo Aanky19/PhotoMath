@@ -1,24 +1,19 @@
 package com.example.ankur.photomath;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
+import android.widget.ImageButton;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * The {@link ViewPager} that will host the section contents.
      */
+    public ImageButton settings;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
 
@@ -50,11 +46,10 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(this.getResources().getColor(android.R.color.transparent));
         }
-//        TODO remove below two lines if everything work fine
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.tab_layout);
-//        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
+
+        // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
@@ -66,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera_alt_black_36dp);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_keyboard_black_36dp);
 
+        settings = (ImageButton) findViewById(R.id.ibtnSetting);
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent setting  = new Intent(getApplicationContext(),SeekActivity.class);
+                startActivity(setting);
+            }
+        });
     }
 
 
