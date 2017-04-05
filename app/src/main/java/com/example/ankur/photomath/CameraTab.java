@@ -87,6 +87,8 @@ public class CameraTab extends Fragment {
         preview = (ImageView) rootView.findViewById(R.id.ImageView);
         av=getActivity();
         Bitmap bitmap = null;
+
+
         Capture.setOnClickListener(new View.OnClickListener() {
 
             @Override

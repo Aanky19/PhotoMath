@@ -29,6 +29,8 @@ dependencies {
     compile 'com.android.support:support-v4:25.2.0'
     compile 'com.gospelware.liquidbutton:liquidButtonLib:1.1.5'
     compile 'com.romainpiel.shimmer:library:1.4.0@aar'
+    compile 'com.google.code.gson:gson:2.4'
+
     testCompile 'junit:junit:4.12'
 
 }

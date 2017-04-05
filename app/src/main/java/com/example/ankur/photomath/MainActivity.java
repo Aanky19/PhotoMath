@@ -14,6 +14,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(this.getResources().getColor(android.R.color.transparent));
         }
+
+        //importing weights from json file
+        new WeightImportTask(this.getApplicationContext()).execute("weights-784-30-30-17.json");
 
         // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.

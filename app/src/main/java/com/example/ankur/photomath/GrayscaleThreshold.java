@@ -33,10 +33,10 @@ import java.util.ArrayList;
 import static com.example.ankur.photomath.CameraTab.av;
 import static com.example.ankur.photomath.CameraTab.threshold;
 
-class GrayscaleThreshold extends AsyncTask<Bitmap, Integer, Bitmap> {
+class GrayscaleThreshold extends AsyncTask<Bitmap, Integer, ArrayList<Bitmap>> {
     @Override
 
-    protected Bitmap doInBackground(Bitmap... params) {
+    protected ArrayList<Bitmap> doInBackground(Bitmap... params) {
         Bitmap bitmap = params[0];
         ArrayList<Bitmap> horizontalList = new ArrayList<>();
         ArrayList<Bitmap> verticalList = new ArrayList<>();
@@ -225,7 +225,7 @@ class GrayscaleThreshold extends AsyncTask<Bitmap, Integer, Bitmap> {
             }
         }
         if (verticalList.size() !=0)
-            return verticalList.get(0);
+            return verticalList;
         else {
             return null;
         }
@@ -358,7 +358,7 @@ class GrayscaleThreshold extends AsyncTask<Bitmap, Integer, Bitmap> {
     }
 
     @Override
-    protected void onPostExecute(Bitmap bitmap) {
+    protected void onPostExecute(ArrayList<Bitmap> bitmap ) {
         super.onPostExecute(bitmap);
     }
 }
